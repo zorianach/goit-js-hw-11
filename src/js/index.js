@@ -48,7 +48,10 @@ async function onSearchClick(e) {
 
     Notify.success(`Hooray! We found ${totalPictures} images.`, paramsNotify);
 
-    refs.loadMore.classList.remove('load-more-hidden');
+    if (!(totalPictures <= 40)){
+      refs.loadMore.classList.remove('load-more-hidden');
+    }
+    
 
     refs.photoGallery.innerHTML = createMarkup(response.data.hits);
     lightbox.refresh();
