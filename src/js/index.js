@@ -3,12 +3,14 @@ import { refs } from "./refs";
 import { Notify } from "notiflix";
 import { lightbox } from "./lightbox";
 
+
 const paramsNotify = {
   position: 'center-center',
   fontSize: '30px',
   timeout: 2000,
   width: '500px',
 };
+Notify.info('Please enter your search query.', paramsNotify);
 
 refs.searchForm.addEventListener('submit', onSearchClick);
 refs.loadMore.addEventListener('click', onLoadMoreClick);
