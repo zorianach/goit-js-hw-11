@@ -20,8 +20,10 @@ let page;
 
 async function onSearchClick(e) {
   e.preventDefault();
+  refs.photoGallery.innerHTML = " ";
+  refs.loadMore.classList.add('load-more-hidden');
   page = 1;
-  
+
   const formData = new FormData(e.target);
   q = formData.get("searchQuery");
 
@@ -36,22 +38,23 @@ async function onSearchClick(e) {
     const response = await getImages(q, page);
     console.log(response.data.hits);
 
-    if (response.data.hits.length === 0) {
-      Notify.info('Sorry, there are no images matching your search query. Please try again.', paramsNotify);
-      return;
-    }
-
     if (response.status !== 200 ) {
             throw new Error(response.statusText);
           }
-    const totalPictures = await response.data.totalHits;
 
-    Notify.success(`Hooray! We found ${totalPictures} images.`, paramsNotify);
+    const totalPictures = await response.data.totalHits;
 
     if (!(totalPictures <= 40)){
       refs.loadMore.classList.remove('load-more-hidden');
     }
-    
+
+    if (response.data.hits.length === 0) {
+      refs.photoGallery.innerHTML = "";
+      Notify.info('Sorry, there are no images matching your search query. Please try again.', paramsNotify);
+      return;
+    } else {
+      Notify.success(`Hooray! We found ${totalPictures} images.`, paramsNotify);
+    }
 
     refs.photoGallery.innerHTML = createMarkup(response.data.hits);
     lightbox.refresh();
